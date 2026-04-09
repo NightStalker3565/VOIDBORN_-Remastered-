@@ -7,7 +7,7 @@ export const SERVERS: Record<string, Server> = {
     id: "localhost",
     hostname: "HOME-PC",
     ip: "127.0.0.1",
-    description: "Your local machine",
+    description: "Your local machine.",
     motd: "",
     fileSystem: {
       "C:": {
@@ -16,7 +16,7 @@ export const SERVERS: Record<string, Server> = {
           DOS: {
             type: "dir",
             children: {
-              "COMMAND.COM": { type: "file", content: "MS-DOS Command Interpreter v6.22" },
+              "COMMAND.COM": { type: "file", content: "MH-DOS Command Interpreter v0.62" },
               "AUTOEXEC.BAT": { type: "file", content: "@ECHO OFF\nPROMPT $P$G\nPATH C:\\DOS;C:\\TOOLS" },
               "CONFIG.SYS": { type: "file", content: "DEVICE=C:\\DOS\\HIMEM.SYS\nDEVICE=C:\\DOS\\EMM386.EXE\nBUFFERS=20\nFILES=40\nDOS=HIGH,UMB" },
             },
@@ -24,8 +24,8 @@ export const SERVERS: Record<string, Server> = {
           TOOLS: {
             type: "dir",
             children: {
-              "SSH.EXE": { type: "file", content: "SSH client for MS-DOS. Usage: SSH [user@]host [-p port]" },
-              "EDIT.COM": { type: "file", content: "Text editor for MS-DOS" },
+              "SSH.EXE": { type: "file", content: "SSH client for MH-DOS. Usage: SSH [user@]host [-p port]" },
+              "EDIT.COM": { type: "file", content: "Text editor for MH-DOS" },
             },
           },
           DOCUMENTS: {

@@ -174,6 +174,13 @@ export default function Terminal() {
     inputRef.current?.focus();
   }, []);
 
+  // Re-grab focus on any click anywhere in the document
+  useEffect(() => {
+    const handleClick = () => inputRef.current?.focus();
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
+
   const getPrompt = useCallback((): string => {
     const { connectedServer, currentPath } = state;
     if (connectedServer) {
@@ -414,6 +421,7 @@ export default function Terminal() {
           }))
         }
         onKeyDown={handleKeyDown}
+        onBlur={() => setTimeout(() => inputRef.current?.focus(), 0)}
         className="opacity-0 absolute -left-9999 w-0 h-0"
         autoComplete="off"
         autoCorrect="off"
