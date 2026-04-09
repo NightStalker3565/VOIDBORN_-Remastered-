@@ -13,30 +13,48 @@ import { C } from "../lib/colors";
 type BootLine = string | { text: string; color: string; charDelay?: number };
 
 const CHAR_DELAY_DEFAULT = 18; // ms per character for normal text
-const CHAR_DELAY_ART     = 3;  // ms per character for ASCII art
 const LINE_GAP           = 60; // ms added after each line finishes
 
+// charDelay: 0 = print instantly (no typewriter)
 const BOOT_SEQUENCE: BootLine[] = [
   { text: "MH-DOS Version 0.97",                               color: C.WHITE },
-  { text: "Copyright (C) Macrohard 1994. All rights reserved.", color: C.WHITE  },
+  { text: "Copyright (C) Macrohard 1994. All rights reserved.", color: C.WHITE },
   { text: "Starting MH-DOS...",                                color: C.WHITE },
-  { text: "...", color: C.WHITE, charDelay: 1000},
-  { text: "Initiating CtrlOpus...",                            color: C.WHITE  },
-  { text: "Running OpusBoot...",                            color: C.WHITE  },
+  { text: "...",                                               color: C.WHITE, charDelay: 1000 },
+  { text: "Initiating CtrlOpus...",                            color: C.WHITE },
+  { text: "Running OpusBoot...",                               color: C.WHITE },
   "__CLEAR__",
-  { text: "  ____  _____ ____ ___ ____ _____ _   _ ",          color: C.WHITE, charDelay: 300 },
-  { text: " |  _ \\| ____| __ )_ _|  _ \\_   _| | | |",        color: C.WHITE, charDelay: 300 },
-  { text: " | |_) |  _| |  _ \\| || |_) || | | |_| |",         color: C.WHITE, charDelay: 300 },
-  { text: " |  _ <| |___| |_) | ||  _ < | | |  _  |",         color: C.WHITE, charDelay: 300 },
-  { text: " |_| \\_\\_____|____/___|_| \\_\\|_| |_| |_|",        color: C.WHITE, charDelay: 300 },
-  { text: "  _        _     ____  ____  ",                     color: C.WHITE, charDelay: 300 },
-  { text: " | |      / \\   | __ )/ ___| ",                     color: C.WHITE, charDelay: 300 },
-  { text: " | |     / _ \\  |  _ \\___ \\ ",                     color: C.WHITE, charDelay: 300 },
-  { text: " | |___ / ___ \\ | |_) |___) |",                    color: C.WHITE, charDelay: 300 },
-  { text: " |_____/_/   \\_\\|____/|____/ ",                     color: C.WHITE, charDelay: 300 },
+  { text: "  ____  _____ ____ ___ ____ _____ _   _ ",          color: C.WHITE, charDelay: 12 },
+  { text: " |  _ \\| ____| __ )_ _|  _ \\_   _| | | |",        color: C.WHITE, charDelay: 12 },
+  { text: " | |_) |  _| |  _ \\| || |_) || | | |_| |",         color: C.WHITE, charDelay: 12 },
+  { text: " |  _ <| |___| |_) | ||  _ < | | |  _  |",         color: C.WHITE, charDelay: 12 },
+  { text: " |_| \\_\\_____|____/___|_| \\_\\|_| |_| |_|",        color: C.WHITE, charDelay: 12 },
+  { text: "  _        _     ____  ____  ",                     color: C.WHITE, charDelay: 12 },
+  { text: " | |      / \\   | __ )/ ___| ",                     color: C.WHITE, charDelay: 12 },
+  { text: " | |     / _ \\  |  _ \\___ \\ ",                     color: C.WHITE, charDelay: 12 },
+  { text: " | |___ / ___ \\ | |_) |___) |",                    color: C.WHITE, charDelay: 12 },
+  { text: " |_____/_/   \\_\\|____/|____/ ",                     color: C.WHITE, charDelay: 12 },
   "",
   "__CLEAR__",
+  { text: "Type HELP for available commands.",                  color: C.WHITE },
+];
+
+// Shown on return visits — art and text appear instantly, no waiting
+const RETURN_BOOT_SEQUENCE: BootLine[] = [
+  { text: "  ____  _____ ____ ___ ____ _____ _   _ ",          color: C.WHITE, charDelay: 0 },
+  { text: " |  _ \\| ____| __ )_ _|  _ \\_   _| | | |",        color: C.WHITE, charDelay: 0 },
+  { text: " | |_) |  _| |  _ \\| || |_) || | | |_| |",         color: C.WHITE, charDelay: 0 },
+  { text: " |  _ <| |___| |_) | ||  _ < | | |  _  |",         color: C.WHITE, charDelay: 0 },
+  { text: " |_| \\_\\_____|____/___|_| \\_\\|_| |_| |_|",        color: C.WHITE, charDelay: 0 },
+  { text: "  _        _     ____  ____  ",                     color: C.WHITE, charDelay: 0 },
+  { text: " | |      / \\   | __ )/ ___| ",                     color: C.WHITE, charDelay: 0 },
+  { text: " | |     / _ \\  |  _ \\___ \\ ",                     color: C.WHITE, charDelay: 0 },
+  { text: " | |___ / ___ \\ | |_) |___) |",                    color: C.WHITE, charDelay: 0 },
+  { text: " |_____/_/   \\_\\|____/|____/ ",                     color: C.WHITE, charDelay: 0 },
+  "",
+  { text: "Welcome back.",                                      color: C.GREEN  },
   { text: "Type HELP for available commands.",                  color: C.WHITE  },
+  "",
 ];
 
 function generateId() {
@@ -79,7 +97,7 @@ export default function Terminal() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => setCursorBlink((b) => !b), 500);
+    const interval = setInterval(() => setCursorBlink((b) => !b), 120);
     return () => clearInterval(interval);
   }, []);
 
@@ -88,10 +106,13 @@ export default function Terminal() {
   }, [state.lines, state.currentInput]);
 
   useEffect(() => {
+    const isReturning = localStorage.getItem("mhdos_played") === "true";
+    const sequence = isReturning ? RETURN_BOOT_SEQUENCE : BOOT_SEQUENCE;
+
     const timeouts: ReturnType<typeof setTimeout>[] = [];
     let delay = 0;
 
-    for (const entry of BOOT_SEQUENCE) {
+    for (const entry of sequence) {
       const isStr   = typeof entry === "string";
       const text    = isStr ? entry : entry.text;
       const color   = isStr ? C.WHITE : entry.color;
@@ -105,14 +126,15 @@ export default function Terminal() {
         continue;
       }
 
-      if (text === "") {
+      if (text === "" || cDelay === 0) {
+        // Empty lines and instant lines print in full immediately
         timeouts.push(setTimeout(() => {
           setState((prev) => ({
             ...prev,
-            lines: [...prev.lines, makeLine("system", "", color)],
+            lines: [...prev.lines, makeLine("system", text, color)],
           }));
         }, delay));
-        delay += 30;
+        delay += cDelay === 0 ? 20 : 30;
         continue;
       }
 
@@ -140,6 +162,7 @@ export default function Terminal() {
     }
 
     timeouts.push(setTimeout(() => {
+      if (!isReturning) localStorage.setItem("mhdos_played", "true");
       setBooted(true);
       inputRef.current?.focus();
     }, delay + 100));
