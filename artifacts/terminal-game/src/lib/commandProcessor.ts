@@ -60,6 +60,7 @@ export function processCommand(
   switch (cmd) {
     case "CLS":
     case "CLEAR":
+    case "CLR":
       return { lines: [], clearScreen: true };
 
     case "VER":
@@ -231,7 +232,7 @@ export function processCommand(
       return {
         lines: [
           out(""),
-          out("Windows IP Configuration"),
+          out("Binbows IP Configuration"),
           out(""),
           out("Ethernet adapter Local Area Connection:"),
           out("  IP Address. . . : 192.168.1.100"),
@@ -343,6 +344,25 @@ export function processCommand(
           clearScreen: true,
         };
       }
+
+      if (serverId === "corp") {
+        return {
+          lines: [
+            out(""),
+            sys(`Connecting to ${hostArg} (${server.ip})...`, C.GREY),
+            sys("Matching server ID detected on COM23", C.GREY),
+            sys("Forwarding connection attempt to COM23...", C.GREY),
+            sys("Attempting to connect to server...", C.GREY),
+            sys("Connection established.", C.WHITE),
+            sys(server.motd, C.ORANGE),
+            sys(`Password: `, C.YELLOW),
+            clearscreen
+          ],
+          awaitingPassword: true,
+          pendingServer: server,
+        };
+      }
+
 
       const startPath = Object.keys(server.fileSystem)[0];
       return {
