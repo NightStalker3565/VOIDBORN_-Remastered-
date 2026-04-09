@@ -5,40 +5,38 @@ import { pathToString, setFileAtPath } from "../lib/fileSystemUtils";
 import { SERVERS, LOCAL_SERVER_ID } from "../data/servers";
 import { C } from "../lib/colors";
 
-// A boot line is either a plain string (white) or { text, color }
-type BootLine = string | { text: string; color: string };
+// A boot line is either:
+//   - a plain string "" or "__CLEAR__" for spacing / clear
+//   - { text, color, charDelay? }
+//       charDelay = ms between each character (default 18)
+//       set charDelay: 3 for ASCII art so it sweeps in fast
+type BootLine = string | { text: string; color: string; charDelay?: number };
+
+const CHAR_DELAY_DEFAULT = 18; // ms per character for normal text
+const CHAR_DELAY_ART     = 3;  // ms per character for ASCII art
+const LINE_GAP           = 60; // ms added after each line finishes
 
 const BOOT_SEQUENCE: BootLine[] = [
-  { text: "MH-DOS Version 0.97",                              color: C.WHITE  },
+  { text: "MH-DOS Version 0.97",                               color: C.WHITE },
   { text: "Copyright (C) Macrohard 1994. All rights reserved.", color: C.GREY  },
-  { text: "Starting MH-DOS...",                               color: C.WHITE  },
+  { text: "Starting MH-DOS...",                                color: C.WHITE },
   "",
   "",
-  { text: "Initiating CtrlOpus...",                           color: C.CYAN   },
+  { text: "Initiating CtrlOpus...",                            color: C.CYAN  },
   "__CLEAR__",
-  { text: "  ____  _____ ____ ___ ____ _____ _   _ ",         color: C.WHITE  },
-  { text: " |  _ \\| ____| __ )_ _|  _ \\_   _| | | |",       color: C.WHITE  },
-  { text: " | |_) |  _| |  _ \\| || |_) || | | |_| |",        color: C.WHITE  },
-  { text: " |  _ <| |___| |_) | ||  _ < | | |  _  |",        color: C.WHITE  },
-  { text: " |_| \\_\\_____|____/___|_| \\_\\|_| |_| |_|",       color: C.WHITE  },
-  { text: "  _        _     ____  ____  ",                    color: C.WHITE  },
-  { text: " | |      / \\   | __ )/ ___| ",                    color: C.WHITE  },
-  { text: " | |     / _ \\  |  _ \\___ \\ ",                    color: C.WHITE  },
-  { text: " | |___ / ___ \\ | |_) |___) |",                   color: C.WHITE  },
-  { text: " |_____/_/   \\_\\|____/|____/ ",                    color: C.WHITE  },
+  { text: "  ____  _____ ____ ___ ____ _____ _   _ ",          color: C.WHITE, charDelay: CHAR_DELAY_ART },
+  { text: " |  _ \\| ____| __ )_ _|  _ \\_   _| | | |",        color: C.WHITE, charDelay: CHAR_DELAY_ART },
+  { text: " | |_) |  _| |  _ \\| || |_) || | | |_| |",         color: C.WHITE, charDelay: CHAR_DELAY_ART },
+  { text: " |  _ <| |___| |_) | ||  _ < | | |  _  |",         color: C.WHITE, charDelay: CHAR_DELAY_ART },
+  { text: " |_| \\_\\_____|____/___|_| \\_\\|_| |_| |_|",        color: C.WHITE, charDelay: CHAR_DELAY_ART },
+  { text: "  _        _     ____  ____  ",                     color: C.WHITE, charDelay: CHAR_DELAY_ART },
+  { text: " | |      / \\   | __ )/ ___| ",                     color: C.WHITE, charDelay: CHAR_DELAY_ART },
+  { text: " | |     / _ \\  |  _ \\___ \\ ",                     color: C.WHITE, charDelay: CHAR_DELAY_ART },
+  { text: " | |___ / ___ \\ | |_) |___) |",                    color: C.WHITE, charDelay: CHAR_DELAY_ART },
+  { text: " |_____/_/   \\_\\|____/|____/ ",                     color: C.WHITE, charDelay: CHAR_DELAY_ART },
   "",
   "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "__CLEAR__",
-  { text: "Type HELP for available commands.",                 color: C.GREY   },
+  { text: "Type HELP for available commands.",                  color: C.GREY  },
   "",
 ];
 
@@ -91,37 +89,61 @@ export default function Terminal() {
   }, [state.lines, state.currentInput]);
 
   useEffect(() => {
-    let timeouts: ReturnType<typeof setTimeout>[] = [];
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
     let delay = 0;
 
     for (const entry of BOOT_SEQUENCE) {
-      const isStr = typeof entry === "string";
-      const text  = isStr ? entry : entry.text;
-      const color = isStr ? C.WHITE : entry.color;
+      const isStr   = typeof entry === "string";
+      const text    = isStr ? entry : entry.text;
+      const color   = isStr ? C.WHITE : entry.color;
+      const cDelay  = isStr ? CHAR_DELAY_DEFAULT : (entry.charDelay ?? CHAR_DELAY_DEFAULT);
 
-      const t = setTimeout(() => {
-        if (text === "__CLEAR__") {
+      if (text === "__CLEAR__") {
+        timeouts.push(setTimeout(() => {
           setState((prev) => ({ ...prev, lines: [] }));
-        } else {
+        }, delay));
+        delay += 80;
+        continue;
+      }
+
+      if (text === "") {
+        timeouts.push(setTimeout(() => {
           setState((prev) => ({
             ...prev,
-            lines: [
-              ...prev.lines,
-              makeLine("system", text, color),
-            ],
+            lines: [...prev.lines, makeLine("system", "", color)],
           }));
-        }
-      }, delay);
+        }, delay));
+        delay += 30;
+        continue;
+      }
 
-      timeouts.push(t);
-      delay += text === "" ? 30 : 40;
+      // Push an empty line first, then fill it character by character
+      timeouts.push(setTimeout(() => {
+        setState((prev) => ({
+          ...prev,
+          lines: [...prev.lines, makeLine("system", "", color)],
+        }));
+      }, delay));
+
+      for (let i = 1; i <= text.length; i++) {
+        const partial = text.slice(0, i);
+        timeouts.push(setTimeout(() => {
+          setState((prev) => {
+            const lines = [...prev.lines];
+            const last  = lines[lines.length - 1];
+            if (last) lines[lines.length - 1] = { ...last, content: partial };
+            return { ...prev, lines };
+          });
+        }, delay + i * cDelay));
+      }
+
+      delay += text.length * cDelay + LINE_GAP;
     }
 
-    const doneTimeout = setTimeout(() => {
+    timeouts.push(setTimeout(() => {
       setBooted(true);
       inputRef.current?.focus();
-    }, delay + 100);
-    timeouts.push(doneTimeout);
+    }, delay + 100));
 
     return () => timeouts.forEach(clearTimeout);
   }, []);
