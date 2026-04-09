@@ -8,6 +8,7 @@ import {
   makeDirAtPath,
 } from "./fileSystemUtils";
 import { SERVERS, IP_TO_SERVER, LOCAL_SERVER_ID } from "../data/servers";
+import { C } from "./colors";
 
 let lineCounter = 0;
 function makeLine(
@@ -19,13 +20,13 @@ function makeLine(
 }
 
 function out(content: string, color?: string): TerminalLine {
-  return makeLine("output", content, color);
+  return makeLine("output", content, color ?? C.WHITE);
 }
 function err(content: string): TerminalLine {
-  return makeLine("error", content);
+  return makeLine("error", content, C.RED);
 }
 function sys(content: string, color?: string): TerminalLine {
-  return makeLine("system", content, color);
+  return makeLine("system", content, color ?? C.CYAN);
 }
 
 export interface CommandResult {
@@ -64,8 +65,8 @@ export function processCommand(
       return {
         lines: [
           out(""),
-          out("MS-DOS Version 6.22", "#00ff00"),
-          out("Hacker Terminal v0.1 - UNAUTHORIZED BUILD", "#00ff00"),
+          out("MS-DOS Version 6.22", C.GREEN),
+          out("Hacker Terminal v0.1 - UNAUTHORIZED BUILD", C.GREEN),
           out(""),
         ],
       };
@@ -74,7 +75,7 @@ export function processCommand(
       return {
         lines: [
           out(""),
-          out("Available commands:", "#00ff00"),
+          out("Available commands:", C.GREEN),
           out("  DIR [path]       - List directory contents"),
           out("  CD [path]        - Change directory"),
           out("  TYPE [file]      - View file contents"),
@@ -89,7 +90,7 @@ export function processCommand(
           out("  IPCONFIG         - Show network info"),
           out("  PING [host]      - Ping a host"),
           out(""),
-          out("Tip: Use UP/DOWN arrows to navigate command history", "#888888"),
+          out("Tip: Use UP/DOWN arrows to navigate command history", C.GREY),
           out(""),
         ],
       };
@@ -113,14 +114,14 @@ export function processCommand(
 
       const lines: TerminalLine[] = [
         out(""),
-        out(` Directory of ${pathToString(lookPath)}`, "#888888"),
+        out(` Directory of ${pathToString(lookPath)}`, C.GREY),
         out(""),
       ];
       if (dirs.length === 0 && files.length === 0) {
         lines.push(out("  (empty)"));
       }
       for (const [name] of dirs) {
-        lines.push(out(`  <DIR>          ${name}`, "#00aaff"));
+        lines.push(out(`  <DIR>          ${name}`, C.BLUE));
       }
       for (const [name, n] of files) {
         const size = n.content ? n.content.length : 0;
@@ -131,7 +132,7 @@ export function processCommand(
       lines.push(
         out(
           `  ${dirs.length} Dir(s)   ${files.length} File(s)`,
-          "#888888"
+          C.GREY
         )
       );
       lines.push(out(""));
@@ -181,8 +182,8 @@ export function processCommand(
       return {
         lines: [
           out(""),
-          sys(`-- Write Mode: ${filename} --`, "#ffff00"),
-          sys("Type your content. Enter a line with only '.' to save.", "#888888"),
+          sys(`-- Write Mode: ${filename} --`, C.YELLOW),
+          sys("Type your content. Enter a line with only '.' to save.", C.GREY),
           out(""),
         ],
         enterWriteMode: true,
@@ -209,10 +210,10 @@ export function processCommand(
     case "WHOAMI": {
       if (isRemote) {
         return {
-          lines: [out(`admin@${connectedServer!.hostname}`, "#00ff00")],
+          lines: [out(`admin@${connectedServer!.hostname}`, C.GREEN)],
         };
       }
-      return { lines: [out("user@HOME-PC", "#00ff00")] };
+      return { lines: [out("user@HOME-PC", C.GREEN)] };
     }
 
     case "IPCONFIG": {
@@ -238,9 +239,9 @@ export function processCommand(
           out("  Default Gateway : 192.168.1.1"),
           out(""),
           out("Known network hosts:"),
-          out("  192.168.1.50  CORP-MAIN", "#00aaff"),
-          out("  10.0.0.1      UNKNOWN", "#ffaa00"),
-          out("  172.16.0.99   MIL-SEC-99", "#ff4444"),
+          out("  192.168.1.50  CORP-MAIN", C.BLUE),
+          out("  10.0.0.1      UNKNOWN", C.ORANGE),
+          out("  172.16.0.99   MIL-SEC-99", C.RED),
           out(""),
         ],
       };
@@ -263,8 +264,8 @@ export function processCommand(
             out(`Reply from ${s.ip}: bytes=32 time=44ms TTL=64`),
             out(`Reply from ${s.ip}: bytes=32 time=49ms TTL=64`),
             out(""),
-            out(`Ping statistics for ${s.ip}:`, "#888888"),
-            out(`  Packets: Sent=4, Received=4, Lost=0 (0% loss)`, "#888888"),
+            out(`Ping statistics for ${s.ip}:`, C.GREY),
+            out(`  Packets: Sent=4, Received=4, Lost=0 (0% loss)`, C.GREY),
             out(""),
           ],
         };
@@ -313,10 +314,10 @@ export function processCommand(
         return {
           lines: [
             out(""),
-            sys(`Connecting to ${hostArg} (${server.ip})...`, "#888888"),
-            sys(`Connection established.`, "#00ff00"),
-            sys(server.motd, "#ffaa00"),
-            sys(`Password: `, "#ffff00"),
+            sys(`Connecting to ${hostArg} (${server.ip})...`, C.GREY),
+            sys(`Connection established.`, C.GREEN),
+            sys(server.motd, C.ORANGE),
+            sys(`Password: `, C.YELLOW),
           ],
           awaitingPassword: true,
           pendingServer: server,
@@ -327,9 +328,9 @@ export function processCommand(
       return {
         lines: [
           out(""),
-          sys(`Connecting to ${hostArg} (${server.ip})...`, "#888888"),
-          sys(`Connection established.`, "#00ff00"),
-          sys(server.motd, "#ffaa00"),
+          sys(`Connecting to ${hostArg} (${server.ip})...`, C.GREY),
+          sys(`Connection established.`, C.GREEN),
+          sys(server.motd, C.ORANGE),
         ],
         newServer: server,
         newPath: [startPath],
@@ -346,7 +347,7 @@ export function processCommand(
       return {
         lines: [
           out(""),
-          sys(`Disconnected from ${connectedServer!.hostname}`, "#888888"),
+          sys(`Disconnected from ${connectedServer!.hostname}`, C.GREY),
           out(""),
         ],
         newServer: null,
@@ -375,7 +376,7 @@ export function processPasswordInput(
       authenticated: true,
       lines: [
         out(""),
-        sys("Access granted.", "#00ff00"),
+        sys("Access granted.", C.GREEN),
         out(""),
       ],
       newServer: server,

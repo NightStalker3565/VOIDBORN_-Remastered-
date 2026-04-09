@@ -3,25 +3,29 @@ import { TerminalLine, TerminalState, Server } from "../types/terminal";
 import { processCommand, processPasswordInput } from "../lib/commandProcessor";
 import { pathToString, setFileAtPath } from "../lib/fileSystemUtils";
 import { SERVERS, LOCAL_SERVER_ID } from "../data/servers";
+import { C } from "../lib/colors";
 
-const BOOT_SEQUENCE = [
-  "MH-DOS Version 0.97",
-  "Copyright (C) Macrohard 1994. All rights reserved.",
-  "Starting MH-DOS...",
+// A boot line is either a plain string (white) or { text, color }
+type BootLine = string | { text: string; color: string };
+
+const BOOT_SEQUENCE: BootLine[] = [
+  { text: "MH-DOS Version 0.97",                              color: C.WHITE  },
+  { text: "Copyright (C) Macrohard 1994. All rights reserved.", color: C.GREY  },
+  { text: "Starting MH-DOS...",                               color: C.WHITE  },
   "",
   "",
-  "Initiating CtrlOpus...",
+  { text: "Initiating CtrlOpus...",                           color: C.CYAN   },
   "__CLEAR__",
-  "  ____  _____ ____ ___ ____ _____ _   _ ",
-  " |  _ \\| ____| __ )_ _|  _ \\_   _| | | |",
-  " | |_) |  _| |  _ \\| || |_) || | | |_| |",
-  " |  _ <| |___| |_) | ||  _ < | | |  _  |",
-  " |_| \\_\\_____|____/___|_| \\_\\|_| |_| |_|",
-  "  _        _     ____  ____  ",
-  " | |      / \\   | __ )/ ___| ",
-  " | |     / _ \\  |  _ \\___ \\ ",
-  " | |___ / ___ \\ | |_) |___) |",
-  " |_____/_/   \\_\\|____/|____/ ",
+  { text: "  ____  _____ ____ ___ ____ _____ _   _ ",         color: C.WHITE  },
+  { text: " |  _ \\| ____| __ )_ _|  _ \\_   _| | | |",       color: C.WHITE  },
+  { text: " | |_) |  _| |  _ \\| || |_) || | | |_| |",        color: C.WHITE  },
+  { text: " |  _ <| |___| |_) | ||  _ < | | |  _  |",        color: C.WHITE  },
+  { text: " |_| \\_\\_____|____/___|_| \\_\\|_| |_| |_|",       color: C.WHITE  },
+  { text: "  _        _     ____  ____  ",                    color: C.WHITE  },
+  { text: " | |      / \\   | __ )/ ___| ",                    color: C.WHITE  },
+  { text: " | |     / _ \\  |  _ \\___ \\ ",                    color: C.WHITE  },
+  { text: " | |___ / ___ \\ | |_) |___) |",                   color: C.WHITE  },
+  { text: " |_____/_/   \\_\\|____/|____/ ",                    color: C.WHITE  },
   "",
   "",
   "",
@@ -33,8 +37,8 @@ const BOOT_SEQUENCE = [
   "",
   "",
   "",
-  "",
-  "Type HELP for available commands.",
+  "__CLEAR__",
+  { text: "Type HELP for available commands.",                 color: C.GREY   },
   "",
 ];
 
@@ -90,30 +94,27 @@ export default function Terminal() {
     let timeouts: ReturnType<typeof setTimeout>[] = [];
     let delay = 0;
 
-    for (const line of BOOT_SEQUENCE) {
+    for (const entry of BOOT_SEQUENCE) {
+      const isStr = typeof entry === "string";
+      const text  = isStr ? entry : entry.text;
+      const color = isStr ? C.WHITE : entry.color;
+
       const t = setTimeout(() => {
-        if (line === "__CLEAR__") {
+        if (text === "__CLEAR__") {
           setState((prev) => ({ ...prev, lines: [] }));
         } else {
           setState((prev) => ({
             ...prev,
             lines: [
               ...prev.lines,
-              makeLine(
-                "system",
-                line,
-                line.startsWith("Loading")
-                  ? "#00ff00"
-                  : line.startsWith("  ")
-                    ? "#888888"
-                    : undefined,
-              ),
+              makeLine("system", text, color),
             ],
           }));
         }
       }, delay);
+
       timeouts.push(t);
-      delay += line === "" ? 30 : 40;
+      delay += text === "" ? 30 : 40;
     }
 
     const doneTimeout = setTimeout(() => {
@@ -156,11 +157,7 @@ export default function Terminal() {
             lines: [
               ...prev.lines,
               echoLine,
-              makeLine(
-                "system",
-                `File saved: ${prev.writeFileName}`,
-                "#00ff00",
-              ),
+              makeLine("system", `File saved: ${prev.writeFileName}`, C.GREEN),
               makeLine("output", ""),
             ],
             currentInput: "",
@@ -306,18 +303,14 @@ export default function Terminal() {
   );
 
   const getLineColor = (line: TerminalLine): string => {
+    // Explicit color always wins
     if (line.color) return line.color;
+    // Type-based fallbacks
     switch (line.type) {
-      case "error":
-        return "#ff4444";
-      case "system":
-        return "#00aaff";
-      case "input":
-        return "#ffffff";
-      case "prompt":
-        return "#00ff00";
-      default:
-        return "#cccccc";
+      case "error":  return C.RED;
+      case "input":  return C.WHITE;
+      case "prompt": return C.GREEN;
+      default:       return C.WHITE;
     }
   };
 
@@ -329,7 +322,7 @@ export default function Terminal() {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-black text-green-400 font-mono text-sm flex flex-col p-2 cursor-text"
+      className="min-h-screen bg-black font-mono text-sm flex flex-col p-2 cursor-text"
       onClick={focusInput}
       style={{ fontFamily: "'Courier New', Courier, monospace" }}
     >
@@ -347,16 +340,16 @@ export default function Terminal() {
         {booted && (
           <div
             className="leading-5 flex items-center"
-            style={{ color: "#cccccc" }}
+            style={{ color: C.WHITE }}
           >
-            <span style={{ color: state.isWriteMode ? "#ffff00" : "#00ff00" }}>
+            <span style={{ color: state.isWriteMode ? C.YELLOW : C.GREEN }}>
               {state.isWriteMode ? "[WRITE] " : prompt}
             </span>
             <span>{displayInput}</span>
             <span
               className="inline-block w-2 h-4 ml-0.5"
               style={{
-                backgroundColor: cursorBlink ? "#00ff00" : "transparent",
+                backgroundColor: cursorBlink ? C.GREEN : "transparent",
               }}
             />
           </div>
@@ -387,7 +380,7 @@ export default function Terminal() {
 
       <div
         className="mt-2 pt-2 border-t border-gray-800 text-xs flex justify-between"
-        style={{ color: "#444" }}
+        style={{ color: C.GREY }}
       >
         <span>
           {state.connectedServer
@@ -397,7 +390,7 @@ export default function Terminal() {
         <span>
           {pathToString(state.currentPath)}
           {state.isWriteMode && (
-            <span style={{ color: "#ffff00" }}>
+            <span style={{ color: C.YELLOW }}>
               {" "}
               [WRITE MODE - type . to save]
             </span>
