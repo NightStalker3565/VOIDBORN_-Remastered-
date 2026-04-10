@@ -886,6 +886,45 @@ export function processCommand(
       };
     }
 
+    case "MATRIX": {
+      const chars = "ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾙﾐ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&";
+      function randStr(len: number) {
+        return Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+      }
+      const rows = 18;
+      const width = 60;
+      const sequence: { text: string; color?: string; charDelay?: number }[] = [
+        { text: "", color: C.GREEN, charDelay: 0 },
+      ];
+      for (let i = 0; i < rows; i++) {
+        sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
+      }
+      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: "Wake up...", color: C.GREEN, charDelay: 80 });
+      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: "The Matrix has you...", color: C.GREEN, charDelay: 80 });
+      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: "Follow the white rabbit.", color: C.GREEN, charDelay: 80 });
+      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: "Knock, knock, Neo.", color: C.GREEN, charDelay: 80 });
+      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
+      for (let i = 0; i < 4; i++) {
+        sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
+      }
+      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
+      return { lines: [], clearScreen: true, typingSequence: sequence };
+    }
+
     default:
       return {
         lines: [
