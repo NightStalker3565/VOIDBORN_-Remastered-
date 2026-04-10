@@ -923,15 +923,6 @@ export function processCommand(
           { text: " (˚ˎ 。7", color: "#FF69B4", charDelay: 0 },
           { text: "  |、˜〵", color: "#FF69B4", charDelay: 0 },
           { text: "  じしˍ,)ノ", color: "#FF69B4", charDelay: 0 },
-          { text: "", charDelay: 0 },
-          { text: "  ✦ FEMBOY MODE ACTIVATED ✦", color: "#FF69B4", charDelay: 50 },
-          { text: "", charDelay: 0 },
-          { text: "  Thigh highs: ON", color: "#FFB6C1", charDelay: 40 },
-          { text: "  Confidence: MAXIMUM", color: "#FFB6C1", charDelay: 40 },
-          { text: "  Tail: wagging", color: "#FFB6C1", charDelay: 40 },
-          { text: "", charDelay: 0 },
-          { text: "  nya~ ^w^", color: "#FF69B4", charDelay: 60 },
-          { text: "", charDelay: 0 },
         ],
       };
     }
@@ -941,34 +932,14 @@ export function processCommand(
         lines: [],
         clearScreen: true,
         typingSequence: [
-          { text: "", charDelay: 0 },
-          { text: "  [JCJenson (in space!) - CLASSIFIED TERMINAL]", color: C.RED, charDelay: 30 },
-          { text: "", charDelay: 0 },
-          { text: "  DISASSEMBLY DRONE UPLINK ESTABLISHED", color: C.RED, charDelay: 50 },
-          { text: "", charDelay: 0 },
-          { text: "   ___", color: C.GREY, charDelay: 0 },
-          { text: "  /   \\    <  Target acquired.", color: C.GREY, charDelay: 0 },
-          { text: " | X X |", color: C.RED,  charDelay: 0 },
-          { text: "  \\___/", color: C.GREY, charDelay: 0 },
-          { text: "  /|_|\\", color: C.GREY, charDelay: 0 },
-          { text: " / | | \\", color: C.GREY, charDelay: 0 },
-          { text: "", charDelay: 0 },
-          { text: "  Worker Drone detected in sector 7.", color: C.WHITE, charDelay: 50 },
-          { text: "  Deploying absolute solver...", color: C.RED,   charDelay: 50 },
-          { text: "", charDelay: 0 },
-          { text: "  N: I can handle this.", color: C.YELLOW, charDelay: 60 },
-          { text: "  Uzi: No you literally cannot.", color: "#9B59B6", charDelay: 60 },
-          { text: "  V: *sips oil*", color: C.RED,    charDelay: 60 },
-          { text: "", charDelay: 0 },
-          { text: "  >> ABSOLUTE SOLVER ONLINE <<", color: C.RED, charDelay: 40 },
-          { text: "", charDelay: 0 },
+          {text: "Have you Cynned?"}
         ],
       };
     }
 
     case "UWU": {
       return {
-        lines: [out("ayoooooo")],
+        lines: [out("Ayo bro")],
       };
     }
 
@@ -977,23 +948,12 @@ export function processCommand(
         lines: [],
         clearScreen: true,
         typingSequence: [
-          { text: "", charDelay: 0 },
           { text: "   ██████╗ ███████╗", color: "#FF0000", charDelay: 0 },
           { text: "  ██╔════╝ ╚════██║", color: "#FF6900", charDelay: 0 },
           { text: "  ██████╗      ██╔╝", color: "#FFD700", charDelay: 0 },
           { text: "  ██╔══██╗    ██╔╝ ", color: "#FF6900", charDelay: 0 },
           { text: "  ╚██████╔╝   ██║  ", color: "#FF0000", charDelay: 0 },
           { text: "   ╚═════╝    ╚═╝  ", color: "#FF0000", charDelay: 0 },
-          { text: "", charDelay: 0 },
-          { text: "  TEKASHI PROTOCOL ENGAGED", color: "#FF0000", charDelay: 50 },
-          { text: "", charDelay: 0 },
-          { text: "  Rainbow level........ MAXIMUM", color: "#FF69B4", charDelay: 40 },
-          { text: "  Snitching status..... ACTIVE", color: "#FFD700", charDelay: 40 },
-          { text: "  Security detail...... 50 FEDS", color: "#FF0000", charDelay: 40 },
-          { text: "  Tattoos.............. YES (face)", color: "#FF6900", charDelay: 40 },
-          { text: "", charDelay: 0 },
-          { text: "  GINE GINE GINE", color: "#FF0000", charDelay: 60 },
-          { text: "", charDelay: 0 },
         ],
       };
     }
@@ -1004,26 +964,7 @@ export function processCommand(
         lines: [],
         clearScreen: true,
         typingSequence: [
-          { text: "", charDelay: 0 },
-          { text: "  ██████╗ ██╗  ██╗██╗ ██████╗ ", color: C.RED, charDelay: 0 },
-          { text: "  ██╔═══██╗██║  ██║██║██╔═══██╗", color: C.RED, charDelay: 0 },
-          { text: "  ██║   ██║███████║██║██║   ██║", color: C.RED, charDelay: 0 },
-          { text: "  ██║   ██║██╔══██║██║██║   ██║", color: C.RED, charDelay: 0 },
-          { text: "  ╚██████╔╝██║  ██║██║╚██████╔╝", color: C.RED, charDelay: 0 },
-          { text: "   ╚═════╝ ╚═╝  ╚═╝╚═╝ ╚═════╝ ", color: C.RED, charDelay: 0 },
-          { text: "", charDelay: 0 },
-          { text: "  ⚠ WARNING: OHIO ENTITY DETECTED ⚠", color: C.RED, charDelay: 50 },
-          { text: "", charDelay: 0 },
-          { text: "  Rizz level............. INFINITE", color: C.ORANGE, charDelay: 40 },
-          { text: "  Sigma status........... GRINDING", color: C.ORANGE, charDelay: 40 },
-          { text: "  Ohio origin............ CONFIRMED", color: C.RED,    charDelay: 40 },
-          { text: "  Skibidi toilet nearby.. YES", color: C.RED,    charDelay: 40 },
-          { text: "", charDelay: 0 },
-          { text: "  \"Only in Ohio...\"", color: C.WHITE, charDelay: 70 },
-          { text: "", charDelay: 0 },
-          { text: "  The Rizzler has entered the server.", color: C.ORANGE, charDelay: 50 },
-          { text: "  No cap. Frfr.", color: C.WHITE,  charDelay: 60 },
-          { text: "", charDelay: 0 },
+          { text: "ERROR: You can only use this command in Ohio.", charDelay: 0 },
         ],
       };
     }
@@ -1033,26 +974,12 @@ export function processCommand(
         lines: [],
         clearScreen: true,
         typingSequence: [
-          { text: "", charDelay: 0 },
-          { text: "        .--.   ", color: C.CYAN, charDelay: 0 },
-          { text: "       |o_o |  ", color: C.CYAN, charDelay: 0 },
-          { text: "       |:_/ |  ", color: C.CYAN, charDelay: 0 },
-          { text: "      //   \\ \\ ", color: C.GREY, charDelay: 0 },
-          { text: "     (|     | )", color: C.GREY, charDelay: 0 },
-          { text: "    /'\\_   _/`\\", color: C.GREY, charDelay: 0 },
-          { text: "    \\___)=(___/ ", color: C.GREY, charDelay: 0 },
-          { text: "    [  TOILET  ]", color: C.GREY, charDelay: 0 },
-          { text: "", charDelay: 0 },
-          { text: "  ♪ SKIBIDI SKIBIDI SKIBIDI ♪", color: C.CYAN, charDelay: 60 },
-          { text: "", charDelay: 0 },
-          { text: "  SKIBIDI TOILET PROTOCOL v3.14", color: C.CYAN,  charDelay: 40 },
-          { text: "  Camera status........... WATCHING", color: C.WHITE, charDelay: 40 },
-          { text: "  Speakerman online....... YES", color: C.WHITE, charDelay: 40 },
-          { text: "  TV man signal........... STRONG", color: C.WHITE, charDelay: 40 },
-          { text: "  G-Man threat level...... SKIBIDI", color: C.RED,   charDelay: 40 },
-          { text: "", charDelay: 0 },
-          { text: "  ♪ dop dop dop dop dop dop ♪", color: C.CYAN, charDelay: 50 },
-          { text: "", charDelay: 0 },
+          { text: "...", charDelay: 60 },
+          { text: "...", color: C.CYAN, charDelay: 60 },
+          { text: "...", color: C.CYAN, charDelay: 60 },
+          { text: "...", color: C.CYAN, charDelay: 60 },
+          { text: "...", color: C.GREY, charDelay: 60 },
+          { text: "dop dop?", color: C.GREY, charDelay: 60 },
         ],
       };
     }
@@ -1070,25 +997,13 @@ export function processCommand(
       for (let i = 0; i < rows; i++) {
         sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
       }
-      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: "Wake up...", color: C.GREEN, charDelay: 80 });
-      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: "The Matrix has you...", color: C.GREEN, charDelay: 80 });
-      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
       sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
       sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
       sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: "Follow the white rabbit.", color: C.GREEN, charDelay: 80 });
-      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
       sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
       sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: "Knock, knock, Neo.", color: C.GREEN, charDelay: 80 });
-      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
+      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
       for (let i = 0; i < 4; i++) {
         sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
       }
