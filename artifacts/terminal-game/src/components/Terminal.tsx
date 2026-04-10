@@ -35,19 +35,8 @@ const BOOT_SEQUENCE: BootLine[] = [
 ];
 
 const RETURN_BOOT_SEQUENCE: BootLine[] = [
-  { text: "  ____  _____ ____ ___ ____ _____ _   _ ",          color: C.WHITE, charDelay: 0 },
-  { text: " |  _ \\| ____| __ )_ _|  _ \\_   _| | | |",        color: C.WHITE, charDelay: 0 },
-  { text: " | |_) |  _| |  _ \\| || |_) || | | |_| |",         color: C.WHITE, charDelay: 0 },
-  { text: " |  _ <| |___| |_) | ||  _ < | | |  _  |",         color: C.WHITE, charDelay: 0 },
-  { text: " |_| \\_\\_____|____/___|_| \\_\\|_| |_| |_|",        color: C.WHITE, charDelay: 0 },
-  { text: "  _        _     ____  ____  ",                     color: C.WHITE, charDelay: 0 },
-  { text: " | |      / \\   | __ )/ ___| ",                     color: C.WHITE, charDelay: 0 },
-  { text: " | |     / _ \\  |  _ \\___ \\ ",                     color: C.WHITE, charDelay: 0 },
-  { text: " | |___ / ___ \\ | |_) |___) |",                    color: C.WHITE, charDelay: 0 },
-  { text: " |_____/_/   \\_\\|____/|____/ ",                     color: C.WHITE, charDelay: 0 },
-  "",
-  { text: "Welcome back.",                                      color: C.GREEN  },
-  { text: "Type HELP for available commands.",                  color: C.WHITE  },
+  { text: "Welcome back.",                   color: C.GREEN },
+  { text: "Type HELP for available commands.", color: C.WHITE },
   "",
 ];
 
