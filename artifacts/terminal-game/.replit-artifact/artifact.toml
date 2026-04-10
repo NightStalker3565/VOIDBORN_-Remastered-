@@ -18,6 +18,7 @@ localPort = 20610
 run = "pnpm --filter @workspace/terminal-game run dev"
 
 [services.production]
+run = ["pnpm", "--filter", "@workspace/terminal-game", "run", "serve"]
 build = [ "pnpm", "--filter", "@workspace/terminal-game", "run", "build" ]
 publicDir = "artifacts/terminal-game/dist/public"
 serve = "static"
