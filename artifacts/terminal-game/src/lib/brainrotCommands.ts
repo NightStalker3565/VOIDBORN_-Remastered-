@@ -55,6 +55,8 @@ export function processBrainrotCommand(
       };
     }
 
+    case "BOYKISSER":
+    case "BOY_KISSER":
     case "FEMBOY": {
       return {
         lines: [],
