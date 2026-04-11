@@ -281,6 +281,15 @@ export default function Terminal() {
 
   const submitCommand = useCallback(
     (inputValue: string) => {
+      if (commandSequence !== null) {
+        setCommandSequence(null);
+      }
+      if (outputTimerRef.current) {
+        clearTimeout(outputTimerRef.current);
+        outputQueueRef.current = [];
+        outputTimerRef.current = null;
+      }
+
       const prompt = getPrompt();
       const echoLine = makeLine("input", `${prompt}${inputValue}`);
 
@@ -441,7 +450,7 @@ export default function Terminal() {
       // Drip the output lines instead of dumping them all at once
       enqueueLines(result.lines);
     },
-    [state, awaitingPassword, pendingServer, writeLines, getPrompt, enqueueLines],
+    [state, awaitingPassword, pendingServer, writeLines, getPrompt, enqueueLines, commandSequence],
   );
 
   // Read the native input's selectionStart after the browser has updated it
