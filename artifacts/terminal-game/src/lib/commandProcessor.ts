@@ -10,6 +10,7 @@ import {
 import { SERVERS, IP_TO_SERVER, LOCAL_SERVER_ID } from "../data/servers";
 import { C } from "./colors";
 import { clearScreenDown } from "node:readline";
+import { processBrainrotCommand } from "./brainrotCommands";
 
 let lineCounter = 0;
 function makeLine(
@@ -46,6 +47,7 @@ export interface CommandResult {
   awaitingPassword?: boolean;
   pendingServer?: Server;
   typingSequence?: { text: string; color?: string; charDelay?: number }[];
+  brainrotEnabled?: boolean;
 }
 
 export function processCommand(
@@ -898,176 +900,24 @@ export function processCommand(
       };
     }
 
-    case "GOLDENKNIGHTS":
-    case "GOLDEN_KNIGHT":
-    case "GOLDEN_KNIGHTS":
-    case "GOLDENKNIGHT": {
+    case "BRAINROT":
+    case "BRAIN_ROT": {
       return {
-        lines: [],
-        clearScreen: false,
-        typingSequence: [
-          { text: "Not the best team, but they have style!", color: C.YELLOW, charDelay: 0 },
-
+        lines: [
+          out(""),
+          sys("Brainrot mode enabled. Use commands like FEMBOY, GOLDENKNIGHT, etc.", C.GREEN),
+          out(""),
         ],
+        brainrotEnabled: true,
       };
-    }
-    
-    case "BOY_KISSER":
-    case "BOYKISSER":
-    case "FEMBOY": {
-      return {
-        lines: [],
-        clearScreen: false,
-        typingSequence: [
-          {
-            text: `           @@@@                                                          @@@     
-         @#..*@                                                      @@*..+@    
-        @=.....%@                                                  @@+.....*@   
-       @-.......:@@                                              @@-........%@  
-      @-..........=@@                                          @@-...........@  
-     @+.............%@         @@@@                          @@=.............*@ 
-    @@...............:@@      @@....=*%@@@                  @*................@ 
-   @..................+@      @:.........+@@             @@..................#@
-  @%....................%@    @@............-@@@       @@-...................=@
-  @-.....................=@@   @@..............*@@    @#.....................:@
- @@........................#@   @@...............+@@@@:.......................@
- @%.........................-@ @@@@@@..............*@.........................@
- @%........................-%%=......................%+.......................@
- @%......................#@:..................................................@
- @%....................%@++=======++*%#......................................-@
- @@..........................................................................+@
-  @..........................................................................%@
-  @#........................................................................=@ 
-   @........................................................................@@ 
-   @%......................................................................#@  
-    @=........................................**#%%@@@@@@@@@@@@+..........*@   
-     @:......*@@@%%%%%@@@@@@@@@@.............-@@@@@@@@=.....@:...........#@    
-      @-.......#+.....*@@@@@@@@..............#@@@@@@@@*.....:@..........@@     
-       @=.....-%......*@@@@@@@@..............@@@@@@@@@*......%-.......=@       
-@@@@     @#....*+......*@@@@@@@@..............@@@@@@@@@*......%=.....-@@%+==+@@ 
-@+..:*%%%%%#...@.......+@@@@@@@@..............=@@@@@@@@.......#=............*@  
- @-............@........@@@@@@@%...............@@@@@@@*.......%=...........@@   
-  @#...........+*.......*@@@@@@.................#@@@@=........%-.........%@     
-   @@#..........@-.......*@@@@:....###*................................#@       
-       @@.....:............................................*=..-......#@        
-       @-..++:+-.+**.....................................**:*+#.........@@      
-      @*......#+:..............................-...........:*............*@     
-     @%........................#....:%%+@@##%@*:..........................=@    
-    @%..........................-##+.......................................*@   
-   @%......:#%*...............................................#@@@@@@@@@@@@@    
-     @@@@@@    @@#-......................................:=@@@                  
-                  @@@@*.............................@@@@@@                      
-                     @=.=*%@@%##-.....................-@                        
-                      @#...............................=@                        
-                       @@*..............................*@                       
-                          @@+............................@@                      
-                        @@+..............................:@                      
-                       @@.................................-@                    
-                      @@++*#@:.............................@@                    
-                           @+...............................@                    
-                          @*................................@@                   
-                         @@..................................@                   
-                         @=..................................@@                  
-                        @@...................................=@                  
-                        @=....................................@@                
-                        @.....................................%@                
-                       @+.....................................+@                
-                       @-......................................@                
-                       @.......................................@@                
-                      @*.......................................#@                
-                      @=.......................................#@                
-                      @:.......................................*@                
-                     @@........................................+@               
-`,
-            color: "#FF69B4",
-            charDelay: 0,
-          },
-        ],
-      };
-    }
-
-    case "MURDER_DRONES": {
-      return {
-        lines: [],
-        clearScreen: true,
-        typingSequence: [
-          {text: "NULL"}
-        ],
-      };
-    }
-
-    case "67": {
-      return {
-        lines: [],
-        clearScreen: true,
-        typingSequence: [
-          { text: "   ██████╗ ███████╗", color: "#FF0000", charDelay: 0 },
-          { text: "  ██╔════╝ ╚════██║", color: "#FF0000", charDelay: 0 },
-          { text: "  ██████╗      ██╔╝", color: "#FF0000", charDelay: 0 },
-          { text: "  ██╔══██╗    ██╔╝ ", color: "#FF0000", charDelay: 0 },
-          { text: "  ╚██████╔╝   ██║  ", color: "#FF0000", charDelay: 0 },
-          { text: "   ╚═════╝    ╚═╝  ", color: "#FF0000", charDelay: 0 },
-          ...generatePatternLines("67", 24, 80, "#FF0000"),
-        ],
-      };
-    }
-
-    case "OHIO_RIZZLER":
-    case "RIZZLER":
-    case "RIZZ":
-    case "OHIO": {
-      return {
-        lines: [],
-        clearScreen: true,
-        typingSequence: [
-          { text: "ERROR: You can only use this command in Ohio.", color: "#FF0000", charDelay: 0 },
-        ],
-      };
-    }
-
-    case "SKIBIDI": {
-      return {
-        lines: [],
-        clearScreen: true,
-        typingSequence: [
-          { text: "...", charDelay: 60 },
-          { text: "...", color: C.CYAN, charDelay: 60 },
-          { text: "...", color: C.CYAN, charDelay: 60 },
-          { text: "...", color: C.CYAN, charDelay: 60 },
-          { text: "...", color: C.GREY, charDelay: 60 },
-          { text: "dop dop?", color: C.GREY, charDelay: 60 },
-        ],
-      };
-    }
-
-    case "MATRIX": {
-      const chars = "ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾙﾐ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&";
-      function randStr(len: number) {
-        return Array.from({ length: len }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
-      }
-      const rows = 18;
-      const width = 60;
-      const sequence: { text: string; color?: string; charDelay?: number }[] = [
-        { text: "", color: C.GREEN, charDelay: 0 },
-      ];
-      for (let i = 0; i < rows; i++) {
-        sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      }
-      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      for (let i = 0; i < 4; i++) {
-        sequence.push({ text: randStr(width), color: C.GREEN, charDelay: 0 });
-      }
-      sequence.push({ text: "", color: C.GREEN, charDelay: 0 });
-      return { lines: [], clearScreen: true, typingSequence: sequence };
     }
 
     default:
+      // Check brainrot commands if enabled
+      if (state.brainrotEnabled) {
+        const brainrotResult = processBrainrotCommand(cmd, args, state);
+        if (brainrotResult) return brainrotResult;
+      }
       return {
         lines: [
           err(`Bad command or file name: ${cmd}`),

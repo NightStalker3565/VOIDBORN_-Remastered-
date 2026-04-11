@@ -65,6 +65,7 @@ const initialState: TerminalState = {
   isWriteMode: false,
   writeFileName: "",
   writeContent: "",
+  brainrotEnabled: false,
 };
 
 // Delay between each output line appearing (ms) — gives the "slow drip" effect
@@ -433,6 +434,7 @@ export default function Terminal() {
           isWriteMode: result.enterWriteMode ?? false,
           writeFileName: result.writeFileName ?? "",
           writeContent: "",
+          brainrotEnabled: result.brainrotEnabled ?? prev.brainrotEnabled,
         };
       });
 

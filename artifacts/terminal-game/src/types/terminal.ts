@@ -37,4 +37,5 @@ export interface TerminalState {
   isWriteMode: boolean;
   writeFileName: string;
   writeContent: string;
+  brainrotEnabled: boolean;
 }
