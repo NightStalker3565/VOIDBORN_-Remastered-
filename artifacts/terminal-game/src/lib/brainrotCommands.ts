@@ -171,12 +171,6 @@ export function processBrainrotCommand(
         lines: [],
         clearScreen: false,
         typingSequence: [
-          { text: "   ██████╗ ███████╗", color: "#FF0000", charDelay: 20 },
-          { text: "  ██╔════╝ ╚════██║", color: "#FF0000", charDelay: 20 },
-          { text: "  ██████╗      ██╔╝", color: "#FF0000", charDelay: 20 },
-          { text: "  ██╔══██╗    ██╔╝ ", color: "#FF0000", charDelay: 20 },
-          { text: "  ╚██████╔╝   ██║  ", color: "#FF0000", charDelay: 20 },
-          { text: "   ╚═════╝    ╚═╝  ", color: "#FF0000", charDelay: 20 },
           ...generatePatternLines("67", lineCount, cols, "#FF0000"),
         ],
       };

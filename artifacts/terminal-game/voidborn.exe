@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# VOIDBORN launcher
+cd "$(dirname "$0")"
+pnpm run dev
