@@ -140,15 +140,15 @@ export function processBrainrotCommand(
         {
             text: `Erm.. why did you summon me?`,        
             color: "#FF69B4",
-            charDelay: 10,},    
+            charDelay: 40,},    
         {
             text: `Oh, I see... Well...`,        
             color: "#FF69B4",
-            charDelay: 12,},  
+            charDelay: 110,},  
         {
             text: `UWU`,        
             color: "#FF69B4",
-            charDelay: 60,},     
+            charDelay: 150,},     
         ],
       };
     }
