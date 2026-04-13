@@ -836,18 +836,16 @@ export function processCommand(
         };
       }
 
-      if (serverId === "corp") {
+      if (serverId === "rli-hub") { 
         return {
           lines: [],
-          awaitingPassword: true,
+          awaitingPassword: false,
           pendingServer: server,
           clearScreen: true,
           typingSequence: [
             { text: "", color: C.WHITE },
-            { text: `Connecting to ${hostArg} (${server.ip})...`, color: C.GREY, charDelay: 50 },
-            { text: "Matching server ID detected on COM23", color: C.GREY, charDelay: 50 },
-            { text: "Forwarding connection attempt to COM23...", color: C.GREY, charDelay: 50 },
-            { text: "Attempting to connect to server...", color: C.GREY, charDelay: 50 },
+            { text: "Matching server ID detected on COM23.", color: C.GREY, charDelay: 50 },
+            { text: `Connecting to ${hostArg} (${server.ip})...  Forwarding connection attempt to COM23...  Attempting to connect to server...`, color: C.GREY, charDelay: 150 },
             { text: "Connection established.", color: C.WHITE, charDelay: 50 },
             { text: server.motd, color: C.ORANGE, charDelay: 20 },
             { text: `Password: `, color: C.YELLOW, charDelay: 50 },
