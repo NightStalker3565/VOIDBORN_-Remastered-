@@ -843,7 +843,6 @@ export function processCommand(
           pendingServer: server,
           clearScreen: true,
           typingSequence: [
-            { text: "", color: C.WHITE },
             { text: `Connecting to ${hostArg} (${server.ip})`, color: C.GREY, charDelay: 50 },
             { text: "...", color: C.GREY, charDelay: 1000, appendToPrev: true },
             { text: "Matching server ID detected on COM23.", color: C.GREY, charDelay: 75 },
