@@ -46,7 +46,7 @@ export interface CommandResult {
   clearScreen?: boolean;
   awaitingPassword?: boolean;
   pendingServer?: Server;
-  typingSequence?: { text: string; color?: string; charDelay?: number; appendToPrev?: boolean }[];
+  typingSequence?: ({ text: string; color?: string; charDelay?: number; appendToPrev?: boolean } | { pause: number })[];
   brainrotEnabled?: boolean;
 }
 
@@ -841,18 +841,18 @@ export function processCommand(
           lines: [],
           awaitingPassword: false,
           pendingServer: server,
-          clearScreen: true,
+          clearScreen: false,
           typingSequence: [
             { text: `Connecting to ${hostArg} (${server.ip})`, color: C.GREY, charDelay: 50 },
             { text: "...", color: C.GREY, charDelay: 1000, appendToPrev: true },
+            { pause: 250 }, 
             { text: "Matching server ID detected on COM23.", color: C.GREY, charDelay: 75 },
             { text: "Forwarding connection attempt to COM23", color: C.GREY, charDelay: 50 },
-            { text: "...", color: C.GREY, charDelay: 1000, appendToPrev: true },
+            { text: "...", color: C.GREY, charDelay: 250, appendToPrev: true },
             { text: "Attempting to connect to server", color: C.GREY, charDelay: 50 },
-            { text: "...", color: C.GREY, charDelay: 1000, appendToPrev: true },
+            { text: "...", color: C.GREY, charDelay: 2000, appendToPrev: true },
             { text: "Connection established.", color: C.WHITE, charDelay: 50 },
             { text: server.motd, color: C.ORANGE, charDelay: 20 },
-            { text: `Password: `, color: C.YELLOW, charDelay: 50 },
           ],
         };
       }
