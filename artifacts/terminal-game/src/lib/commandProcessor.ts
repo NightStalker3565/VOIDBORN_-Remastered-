@@ -46,7 +46,7 @@ export interface CommandResult {
   clearScreen?: boolean;
   awaitingPassword?: boolean;
   pendingServer?: Server;
-  typingSequence?: ({ text: string; color?: string; charDelay?: number; appendToPrev?: boolean } | { pause: number })[];
+  typingSequence?: ({ text: string; color?: string; charDelay?: number; appendToPrev?: boolean } | { pause: number } | { clear: true })[];
   brainrotEnabled?: boolean;
 }
 
@@ -852,8 +852,8 @@ export function processCommand(
             { text: "Attempting to connect to server", color: C.GREY, charDelay: 50 },
             { text: "...", color: C.GREY, charDelay: 2000, appendToPrev: true },
             { text: "Connection established.", color: C.WHITE, charDelay: 50 },
-            { pause: 500}
-            { clear: true }
+            { pause: 500},
+            { clear: true },
             { text: server.motd, color: C.ORANGE, charDelay: 20 },
           ],
         };
